@@ -3,6 +3,7 @@ package main;
 import object.Object_Chest;
 import object.Object_Key;
 import object.Object_door;
+import object.object_boots;
 
 public class AssetSetup {
 	
@@ -28,5 +29,8 @@ public class AssetSetup {
 		gp.object[3].worldX=gp.tileSize*10;
 		gp.object[3].worldY=gp.tileSize*7;
 		
+		gp.object[4]= new object_boots();
+		gp.object[4].worldX=gp.tileSize*37;
+		gp.object[4].worldY=gp.tileSize*42;
 	}
 }

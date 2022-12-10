@@ -106,7 +106,10 @@ public class TileManager {
 			   worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
 			   worldY + gp.tileSize > gp.player.worldY - gp.player.screenX &&
 			   worldY - gp.tileSize < gp.player.worldY + gp.player.screenX ) {
+				if(tilenum==4) {
 					g2.drawImage(tile[tilenum].image, screenX, screenY,gp.tileSize,gp.tileSize,null);
+				}
+				else g2.drawImage(tile[tilenum].image, screenX, screenY,gp.tileSize,gp.tileSize,null);
 			}
 			worldCol++;
 			

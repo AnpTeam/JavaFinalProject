@@ -16,29 +16,33 @@ public class Player extends Entity {
 
 	public final int screenX;
 	public final int screenY;
+	int hasKey = 0;
 
 	public Player(GamePanel gp, KeyboardControl keyboard) {
 
 		this.gp = gp;
 		this.keyboard = keyboard;
 
-		screenX=gp.screenWidth/2-(gp.tileSize/2);
-		screenY=gp.screenHeight/2-(gp.tileSize/2);
-		
-		solidArea =new Rectangle(0,0,gp.tileSize,gp.tileSize);
-		solidArea.x=(4/3)*8;
-		solidArea.y=(4/3)*16;
-		solidArea.width=(4/3)*32;
-		solidArea.height=(4/3)*32;
-		
+		screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
+		screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
+
+		solidArea = new Rectangle(0, 0, gp.tileSize, gp.tileSize);
+		//collision setting
+		solidArea.x = 64;//8 pixel x 4
+		solidArea.y = 90 ;//16 pixel x 4
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
+		solidArea.width = 4;// 16 pixel x 4
+		solidArea.height = 4;// 16
+
 		setDefaultValues();
 		getPlayerImage();
 
 	}
 
 	public void setDefaultValues() {
-		worldX = gp.tileSize*23;
-		worldY = gp.tileSize*21;
+		worldX = gp.tileSize * 23;
+		worldY = gp.tileSize * 21;
 		speed = 1;
 	}
 
@@ -46,8 +50,10 @@ public class Player extends Entity {
 		try {
 			up1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_1.png"));
 			up2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_2.png"));
+			up3 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_3.png"));
 			down1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_1.png"));
 			down2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_2.png"));
+			down3 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_3.png"));
 			left1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_1.png"));
 			left2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_2.png"));
 			right1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_1.png"));
@@ -60,30 +66,34 @@ public class Player extends Entity {
 
 	public void update() {
 		direction = "down";
-		if(keyboard.up == true||keyboard.down == true
-				||keyboard.left == true||keyboard.right == true) {
+		if (keyboard.up == true || keyboard.down == true || keyboard.left == true || keyboard.right == true) {
 			if (keyboard.up == true) {
 				direction = "up";
-				//worldY -= speed;
+				// worldY -= speed;
 			}
 			if (keyboard.down == true) {
-				//worldY += speed;
+				// worldY += speed;
 				direction = "down";
 			}
 			if (keyboard.left == true) {
-				//worldX -= speed;
+				// worldX -= speed;
 				direction = "left";
 			}
 			if (keyboard.right == true) {
-				//worldX += speed;
+				// worldX += speed;
 				direction = "right";
 			}
-			//collision check
-			collisionOn=false;
+			// collision check
+			collisionOn = false;
 			gp.colChecker.checkTile(this);
-			//if collision is false,player can move
-			if(collisionOn==false) {
-				switch(direction) {
+
+			// CHECK OBJECT COLLISION
+			int objectIndex = gp.colChecker.checkObject(this, true);
+			pickUpObject(objectIndex);
+
+			// if collision is false,player can move
+			if (collisionOn == false) {
+				switch (direction) {
 				case "up":
 					worldY -= speed;
 					break;
@@ -95,24 +105,56 @@ public class Player extends Entity {
 					break;
 				case "right":
 					worldX += speed;
-				
+
 					break;
 				}
 			}
 			playerStatus++;
-			if(playerStatus>100) {
-				if(playerNumber==1) {
-					playerNumber=2;
+			if (playerStatus > 120) {
+				if(direction=="left"||direction=="right")
+				if (playerNumber == 1) {
+					playerNumber = 2;
+				} else if (playerNumber == 2) {
+					playerNumber = 1;
 				}
-				else if(playerNumber==2) {
+				if(direction=="up"||direction=="down")
+					if (playerNumber == 1) {
+						playerNumber = 2;
+					} else if (playerNumber == 2) {
+						playerNumber = 3;
+					}
+					if(playerNumber==3) {
 					playerNumber=1;
 				}
-			playerStatus=0;
+				playerStatus = 0;
 			}
 		}
-			
-		}	
-	
+
+	}
+
+	public void pickUpObject(int i) {
+		if (i != 999) {
+
+			String objectName = gp.object[i].name;
+
+			switch (objectName) {
+			case "Key":
+				hasKey++;
+				gp.object[i] = null;
+				break;
+			case "Door":
+				if (hasKey > 0) {
+					gp.object[i] = null;
+					hasKey--;
+				}
+			case "boots":
+				
+				gp.object[i] = null;
+				break;
+
+			}
+		}
+	}
 
 	public void draw(Graphics2D g2) {
 //		g2.setColor(Color.white);
@@ -124,8 +166,11 @@ public class Player extends Entity {
 			if (playerNumber == 1) {
 				image = up1;
 			}
-			if (playerNumber == 2)	{
-				image = up2;			
+			if (playerNumber == 2) {
+				image = up2;
+			}
+			if (playerNumber == 3) {
+				image = up3;
 			}
 			break;
 		case "down":
@@ -133,9 +178,11 @@ public class Player extends Entity {
 				image = down1;
 			}
 			if (playerNumber == 2) {
+				image = down3;
+			}
+			if (playerNumber == 3) {
 				image = down2;
 			}
-		
 			break;
 		case "left":
 			if (playerNumber == 1) {
@@ -144,19 +191,19 @@ public class Player extends Entity {
 			if (playerNumber == 2) {
 				image = left2;
 			}
-			
+
 			break;
 		case "right":
 			if (playerNumber == 1) {
 				image = right1;
 			}
-			if (playerNumber == 2)	{
+			if (playerNumber == 2) {
 				image = right2;
-			}	
+			}
 			break;
 
 		}
-		g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+		g2.drawImage(image, screenX, screenY, gp.tileSize*2,gp.tileSize*2, null);
 
 	}
 

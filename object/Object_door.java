@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import entity.Entity;
+
 public class Object_door extends Superobject {
 	public Object_door() {
 		name="Key";
@@ -14,4 +16,5 @@ public class Object_door extends Superobject {
 		}
 		
 	}
+	
 }
