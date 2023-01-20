@@ -4,22 +4,30 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyboardControl implements KeyListener {
+	GamePanel gp;
+	
 	public boolean up, down, left, right;
+	
+	//GAME STATE
+	public KeyboardControl(GamePanel gp) {
+		this.gp=gp;
+	}
 
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_W) {
-			up=true;
+			up = true;
 		}
 		if (key == KeyEvent.VK_A) {
-			left=true;
+			left = true;
 		}
 		if (key == KeyEvent.VK_S) {
-			down=true;
+			down = true;
 		}
 		if (key == KeyEvent.VK_D) {
-			right=true;
+			right = true;
 		}
 	}
 
@@ -38,6 +46,15 @@ public class KeyboardControl implements KeyListener {
 		if (key == KeyEvent.VK_D) {
 			right = false;
 		}
+		if (key == KeyEvent.VK_M) {
+			if(gp.gameState== gp.playState) {
+				gp.gameState=gp.pauseState;
+			}
+			else if(gp.gameState== gp.pauseState) {
+				gp.gameState=gp.playState;
+			} 
+		}
+		
 
 	}
 

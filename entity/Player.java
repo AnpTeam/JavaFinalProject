@@ -9,14 +9,17 @@ import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.KeyboardControl;
+import main.sound;
 
 public class Player extends Entity {
 	GamePanel gp;
 	KeyboardControl keyboard;
+	
+	static sound sound=new sound();
 
 	public final int screenX;
 	public final int screenY;
-	int hasKey = 0;
+	public int hasKey = 0;
 
 	public Player(GamePanel gp, KeyboardControl keyboard) {
 
@@ -28,12 +31,12 @@ public class Player extends Entity {
 
 		solidArea = new Rectangle(0, 0, gp.tileSize, gp.tileSize);
 		//collision setting
-		solidArea.x = 64;//8 pixel x 4
-		solidArea.y = 90 ;//16 pixel x 4
+		solidArea.x = 32;//8 pixel x 4
+		solidArea.y = 75 ;//16 pixel x 4
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
-		solidArea.width = 4;// 16 pixel x 4
-		solidArea.height = 4;// 16
+		solidArea.width = 16;// 16 pixel x 4
+		solidArea.height = 8;// 16
 
 		setDefaultValues();
 		getPlayerImage();
@@ -41,8 +44,8 @@ public class Player extends Entity {
 	}
 
 	public void setDefaultValues() {
-		worldX = gp.tileSize * 23;
-		worldY = gp.tileSize * 21;
+		worldX = (gp.tileSize * 21)+100;
+		worldY = (gp.tileSize * 21)-100;
 		speed = 1;
 	}
 
@@ -141,17 +144,32 @@ public class Player extends Entity {
 			case "Key":
 				hasKey++;
 				gp.object[i] = null;
+				sound.setFile(1);
+				sound.play();
+				gp.ui.showMessage("You get Key");
 				break;
 			case "Door":
+				gp.object[i].collision=true;
 				if (hasKey > 0) {
 					gp.object[i] = null;
 					hasKey--;
+					gp.ui.showMessage("You opened the door");
 				}
+				else{
+					
+					gp.ui.showMessage("You need a key");
+				}
+				break;
 			case "boots":
 				
 				gp.object[i] = null;
 				break;
-
+			
+			case "Chest":
+				gp.ui.gameFinished = true;
+				gp.stopMusic();
+				break;
+				
 			}
 		}
 	}

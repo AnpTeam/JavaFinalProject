@@ -23,11 +23,11 @@ public class AssetSetup {
 		
 		gp.object[2]= new Object_door();
 		gp.object[2].worldX=gp.tileSize*10;
-		gp.object[2].worldY=gp.tileSize*11;
+		gp.object[2].worldY=gp.tileSize*12;
 		
 		gp.object[3]= new Object_Chest();
 		gp.object[3].worldX=gp.tileSize*10;
-		gp.object[3].worldY=gp.tileSize*7;
+		gp.object[3].worldY=gp.tileSize*8;
 		
 		gp.object[4]= new object_boots();
 		gp.object[4].worldX=gp.tileSize*37;

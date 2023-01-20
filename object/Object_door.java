@@ -8,7 +8,7 @@ import entity.Entity;
 
 public class Object_door extends Superobject {
 	public Object_door() {
-		name="Key";
+		name="Door";
 		try {
 			image=ImageIO.read(getClass().getResourceAsStream("/objects/door.png"));
 		} catch (IOException e) {

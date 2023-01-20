@@ -81,7 +81,7 @@ public class CollisionChecker {
 							entity.collisionOn=true;
 						}
 						if(player == true) {
-							index =i;
+							index = i;
 						}
 					}
 					break;
