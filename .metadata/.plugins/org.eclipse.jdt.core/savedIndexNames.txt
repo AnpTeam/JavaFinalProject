@@ -1,0 +1,2 @@
+INDEX VERSION 1.131+C:\2213111335_JavaProgram\Bravely_Soul\.metadata\.plugins\org.eclipse.jdt.core
+1865797976.index
