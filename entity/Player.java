@@ -23,6 +23,7 @@ public class Player extends Entity {
 
 	public Player(GamePanel gp, KeyboardControl keyboard) {
 
+		super(gp);
 		this.gp = gp;
 		this.keyboard = keyboard;
 
@@ -47,6 +48,11 @@ public class Player extends Entity {
 		worldX = (gp.tileSize * 21)+100;
 		worldY = (gp.tileSize * 21)-100;
 		speed = 1;
+	
+		//STATUS
+		max_life=10;
+		life=max_life;
+	
 	}
 
 	public void getPlayerImage() {
@@ -94,6 +100,9 @@ public class Player extends Entity {
 			int objectIndex = gp.colChecker.checkObject(this, true);
 			pickUpObject(objectIndex);
 
+			//CHECK EVENT
+			//gp.event.checkEvent();
+			
 			// if collision is false,player can move
 			if (collisionOn == false) {
 				switch (direction) {
@@ -108,12 +117,11 @@ public class Player extends Entity {
 					break;
 				case "right":
 					worldX += speed;
-
 					break;
 				}
 			}
 			playerStatus++;
-			if (playerStatus > 120) {
+			if (playerStatus > 1000) {
 				if(direction=="left"||direction=="right")
 				if (playerNumber == 1) {
 					playerNumber = 2;

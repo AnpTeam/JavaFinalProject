@@ -15,6 +15,7 @@ public class sound {
 
 		soundUrl[0] = getClass().getResource("/sound/BGtrack (1).wav");
 		soundUrl[1] = getClass().getResource("/sound/coin.wav");
+		soundUrl[2] = getClass().getResource("/sound/titleBG.wav");
 
 	}
 
@@ -30,7 +31,6 @@ public class sound {
 	}
 
 	public void play() {
-
 		clip.start();
 	}
 
